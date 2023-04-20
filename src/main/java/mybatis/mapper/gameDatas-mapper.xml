@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gameDatas">
+	<insert id="create" parameterType="hashmap">
+		INSERT INTO GAMEDATAS VALUES
+		(GAMEDATAS_SEQ.NEXTVAL, #{roomId}, #{word}, #{talker}, SYSDATE)
+	</insert>
+	
+	<select id="readByRoomId" resultType="gamedata" parameterType="string">
+		SELECT * FROM GAMEDATAS 
+		WHERE ROOM_ID=#{roomId}
+		ORDER BY WRITED
+	</select>
+	
+	<select id="readByWord" resultType="gamedata" parameterType="hashmap">
+		SELECT * FROM GAMEDATAS 
+		WHERE ROOM_ID=#{roomId} AND WORD=#{word}
+		ORDER BY WRITED
+	</select>
+	
+	<select id="readLatest" resultType="gamedata" parameterType="string">
+		SELECT * FROM (
+			SELECT * FROM GAMEDATAS WHERE ROOM_ID = #{roomId}
+			ORDER BY WRITED DESC
+		) WHERE ROWNUM = 1
+	</select>
+</mapper>
